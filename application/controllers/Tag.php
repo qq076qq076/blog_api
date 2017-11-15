@@ -2,17 +2,21 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 require(APPPATH.'/libraries/REST_Controller.php');
 
-class Post extends REST_Controller {
+class Tag extends REST_Controller {
 
     public function __construct(){
         parent::__construct();
-        $this->load->model('Post_model');
+        $this->load->model('Tag_model');
     }
 
     public function index_get(){
         $data = $this->get();
         $search_id = (isset($data['id'])) ? $data['id'] : null ;
-        $data_array  = $this->Post_model->get($search_id);
+        if($search_id){
+            $data_array  = $this->Tag_model->getByTagId($search_id);
+        }else{
+            $data_array  = $this->Tag_model->get();
+        }
         
         $this->response_prepare($data_array);
     }
